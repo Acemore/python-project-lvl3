@@ -23,13 +23,13 @@ jobs:
       - name: Run lint task
         run: make lint
 
-      #- name: Run tests
-      #  run: make test
+      - name: Run tests
+        run: make test
 
-      #- name: Test & publish code coverage
-      #  uses: paambaati/codeclimate-action@v2.7.5
-      #  env:
-      #    CC_TEST_REPORTER_ID: 981f3fe1abbc0a2c0dc9f2dcc2119860dce2ab7d2b488061603d6216901bfd68
-      #  with:
-      #    coverageCommand: make test-coverage
-      #    debug: true
+      - name: Test & publish code coverage
+        uses: paambaati/codeclimate-action@v2.7.5
+        env:
+          CC_TEST_REPORTER_ID: 981f3fe1abbc0a2c0dc9f2dcc2119860dce2ab7d2b488061603d6216901bfd68
+        with:
+          coverageCommand: make test-coverage
+          debug: true
