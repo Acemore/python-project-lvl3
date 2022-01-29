@@ -1,5 +1,6 @@
 import os
 import pytest
+import requests_mock
 import tempfile
 from page_loader import download
 from page_loader.page_loader import get_loaded_file_full_path
@@ -25,13 +26,15 @@ def test_loaded_file_full_path(url):
         )
 
 
-def test_loaded_file_content(requests_mock):
+def test_loaded_file_content():
     with open('tests/fixtures/expected.html') as expected_html:
         expected_loaded_file_content = expected_html.read()
-    requests_mock.get(SECOND_URL, text=expected_loaded_file_content)
 
-    with tempfile.TemporaryDirectory() as temp_dir:
-        loaded_file_path = download(SECOND_URL, temp_dir)
+    with requests_mock.Mocker() as m:
+        m.get(SECOND_URL, text=expected_loaded_file_content)
 
-        with open(loaded_file_path) as loaded_file:
-            assert loaded_file.read() == expected_loaded_file_content
+        with tempfile.TemporaryDirectory() as temp_dir:
+            loaded_file_path = download(SECOND_URL, temp_dir)
+
+            with open(loaded_file_path) as loaded_file:
+                assert loaded_file.read() == expected_loaded_file_content
