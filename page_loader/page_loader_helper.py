@@ -1,3 +1,4 @@
+import logging
 import os
 import re
 import requests
@@ -11,13 +12,21 @@ from page_loader.hyphenated_str_getter import (
 )
 
 
+CHANGED_RESOURCE_LINK = "Resource link was changed from '{}' to '{}'"
 FILES_POSTFIX = '_files'
 HREF = 'href'
 HTML_EXT = '.html'
 HTTP = 'http'
 IMG = 'img'
 LINK = 'link'
+LOADED_RESOURCE = "Resource from page '{}' was loaded to path '{}'"
 QUERY_STRING = r'\?[^?]+$'
+RECEIVED_LOADED_RESOURCE_PATH = (
+    "Loaded resource path from page '{}' was received"
+)
+RECEIVED_LOCAL_RESOURCE_LINK = (
+    "Local resource link from page '{}' was received"
+)
 SCRIPT = 'script'
 SRC = 'src'
 TAGS_LINK_ATTRS = {
@@ -34,6 +43,8 @@ def download_resource(url, output_path):
     with open(output_path, 'wb') as loaded_file:
         for response_chunk in response_chunks:
             loaded_file.write(response_chunk)
+
+    logging.info(LOADED_RESOURCE.format(url, output_path))
 
 
 def get_loaded_resource_name(local_resource_link, url):
@@ -85,12 +96,26 @@ def get_updated_soup(soup, url, output_path):
                 continue
 
             local_resource_link = get_local_resource_link(tag_attr_link, url)
+            local_resource_abs_link = url.rstrip(SLASH) + local_resource_link
+            logging.info(
+                RECEIVED_LOCAL_RESOURCE_LINK.format(local_resource_abs_link)
+            )
+
             loaded_resource_path = get_loaded_resource_path(
                 local_resource_link,
                 url
             )
+            logging.info(
+                RECEIVED_LOADED_RESOURCE_PATH.format(local_resource_abs_link)
+            )
 
             tag[link_attr] = loaded_resource_path
+            logging.info(
+                CHANGED_RESOURCE_LINK.format(
+                    local_resource_link,
+                    loaded_resource_path
+                )
+            )
 
             download_resource(
                 url + local_resource_link,
