@@ -1,26 +1,18 @@
 import logging
 import os
-import re
-import requests
 from urllib.parse import urlparse
 
-from page_loader.hyphenated_str_getter import (
-    EMPTY_STR,
-    get_hyphenated_name,
-    get_hyphenated_str,
-    SLASH
+from page_loader.helpers import EMPTY_STR, SLASH
+from page_loader.helpers.working_with_fs import (
+    download_local_resource, get_loaded_local_resource_file_path
 )
+from page_loader.helpers.working_with_requests import get_local_resource_link
 
 
 CHANGED_RESOURCE_LINK = "Resource link was changed from '{}' to '{}'"
-FILES_POSTFIX = '_files'
 HREF = 'href'
-HTML_EXT = '.html'
-HTTP = 'http'
 IMG = 'img'
 LINK = 'link'
-LOADED_RESOURCE = "Resource from page '{}' was loaded to path '{}'"
-QUERY_STRING = r'\?[^?]+$'
 RECEIVED_LOADED_RESOURCE_PATH = (
     "Loaded resource path from page '{}' was received"
 )
@@ -34,57 +26,6 @@ TAGS_LINK_ATTRS = {
     LINK: HREF,
     SCRIPT: SRC
 }
-
-
-def download_resource(url, output_path):
-    response = requests.get(url)
-    response_chunks = response.iter_content()
-
-    with open(output_path, 'wb') as loaded_file:
-        for response_chunk in response_chunks:
-            loaded_file.write(response_chunk)
-
-    logging.info(LOADED_RESOURCE.format(url, output_path))
-
-
-def get_loaded_resource_name(local_resource_link, url):
-    netloc = urlparse(url).netloc
-    hyphenated_netloc = get_hyphenated_str(netloc)
-
-    local_resource_link = re.sub(
-        QUERY_STRING,
-        EMPTY_STR,
-        local_resource_link,
-        count=1
-    )
-    local_resource_link_without_ext, ext = os.path.splitext(local_resource_link)
-    if not ext:
-        ext = HTML_EXT
-
-    hyphenated_local_resource_link_without_ext = (
-        get_hyphenated_str(local_resource_link_without_ext)
-    )
-
-    return '{}{}{}'.format(
-        hyphenated_netloc,
-        hyphenated_local_resource_link_without_ext,
-        ext
-    )
-
-
-def get_loaded_resource_path(local_resource_link, url):
-    return os.path.join(
-        get_hyphenated_name(url, FILES_POSTFIX),
-        get_loaded_resource_name(local_resource_link, url)
-    )
-
-
-def get_local_resource_link(link, url):
-    if link.startswith(HTTP):
-        link = re.sub(url, EMPTY_STR, link, count=1)
-    elif not link.startswith(SLASH):
-        link = SLASH + link
-    return link.rstrip(SLASH)
 
 
 def get_updated_soup(soup, url, output_path):
@@ -101,7 +42,7 @@ def get_updated_soup(soup, url, output_path):
                 RECEIVED_LOCAL_RESOURCE_LINK.format(local_resource_abs_link)
             )
 
-            loaded_resource_path = get_loaded_resource_path(
+            loaded_resource_path = get_loaded_local_resource_file_path(
                 local_resource_link,
                 url
             )
@@ -117,7 +58,7 @@ def get_updated_soup(soup, url, output_path):
                 )
             )
 
-            download_resource(
+            download_local_resource(
                 url + local_resource_link,
                 os.path.join(
                     output_path,
