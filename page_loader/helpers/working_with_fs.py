@@ -131,7 +131,9 @@ def get_loaded_main_page_file_name(url):
         if ext:
             url_path_ext = ext
 
-    url_without_scheme_and_ext = re.sub(EXT_REGEXP, EMPTY_STR, url_without_scheme)
+    url_without_scheme_and_ext = (
+        re.sub(EXT_REGEXP, EMPTY_STR, url_without_scheme)
+    )
     hyphenated_url_without_scheme = (
         get_hyphenated_str(url_without_scheme_and_ext)
     )
