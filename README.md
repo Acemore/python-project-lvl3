@@ -5,6 +5,7 @@
 [![Test Coverage](https://api.codeclimate.com/v1/badges/3d68d1669e0f6bca0b2f/test_coverage)](https://codeclimate.com/github/Acemore/python-project-lvl3/test_coverage)
 
 
+[![asciicast](https://asciinema.org/a/Vuq3Ub0ouPKB2pmVY0yf8T3Q3.svg)](https://asciinema.org/a/Vuq3Ub0ouPKB2pmVY0yf8T3Q3)
 [![asciicast](https://asciinema.org/a/cmYz6s9HIOkkZdVqfnBaQKTs8.svg)](https://asciinema.org/a/cmYz6s9HIOkkZdVqfnBaQKTs8)
 [![asciicast](https://asciinema.org/a/7qvqHzbY1Kq3OCT78tOWXh5Xo.svg)](https://asciinema.org/a/7qvqHzbY1Kq3OCT78tOWXh5Xo)
 [![asciicast](https://asciinema.org/a/qwyy3zNQ2fTh40GRW1x9wi1Uc.svg)](https://asciinema.org/a/qwyy3zNQ2fTh40GRW1x9wi1Uc)
