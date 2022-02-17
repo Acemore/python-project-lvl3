@@ -7,7 +7,8 @@
 This package allows to download specified page and its local resources from the internet to the specified path.
 
 To install this package from GitHub on your PC enter this command in your terminal:
-python3 -m pip install --user git+https://github.com/Acemore/python-project-lvl3
+
+    python3 -m pip install --user git+https://github.com/Acemore/python-project-lvl3
 
 [![asciicast](https://asciinema.org/a/Vuq3Ub0ouPKB2pmVY0yf8T3Q3.svg)](https://asciinema.org/a/Vuq3Ub0ouPKB2pmVY0yf8T3Q3)
 [![asciicast](https://asciinema.org/a/cmYz6s9HIOkkZdVqfnBaQKTs8.svg)](https://asciinema.org/a/cmYz6s9HIOkkZdVqfnBaQKTs8)
