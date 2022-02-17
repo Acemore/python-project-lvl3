@@ -12,7 +12,7 @@ CREATING_DIR_PERMISSION_ERROR = (
     "You don't have permission to create dir here: '{}'"
 )
 DOT = '.'
-EXT_REGEXP = r'.[^.]+$'
+EXT_REGEXP = r'\.[^.\/]+$'
 FILES_POSTFIX = '_files'
 HTML_EXT = '.html'
 HYPHEN = '-'
@@ -131,7 +131,7 @@ def get_loaded_main_page_file_name(url):
         if ext:
             url_path_ext = ext
 
-    url_without_scheme_and_ext = url_without_scheme.rstrip(url_path_ext)
+    url_without_scheme_and_ext = re.sub(EXT_REGEXP, EMPTY_STR, url_without_scheme)
     hyphenated_url_without_scheme = (
         get_hyphenated_str(url_without_scheme_and_ext)
     )
