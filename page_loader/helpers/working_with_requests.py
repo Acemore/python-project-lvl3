@@ -2,11 +2,12 @@ import re
 import requests
 from requests.exceptions import ConnectionError, RequestException
 
-from page_loader.helpers import EMPTY_STR, KnownError, SLASH
+from page_loader.helpers import (
+    EMPTY_STR, get_url_without_path, HTTP, KnownError, SLASH
+)
 
 
 CONNECTION_ERROR = "Some proplems with connection, resource '{}'"
-HTTP = 'http'
 HTTP_ERROR = "Some HTTP error occured, resource '{}'"
 INVALID_SCHEMA = "Invalid url schema, resource '{}'"
 INVALID_URL = "Invalid url, resource '{}'"
@@ -20,7 +21,8 @@ TOO_MANY_REDIRECTS = "Too many redirects, resource '{}'"
 
 def get_local_resource_link(link, url):
     if link.startswith(HTTP):
-        link = re.sub(url, EMPTY_STR, link, count=1)
+        url_without_path = get_url_without_path(url)
+        link = re.sub(url_without_path, EMPTY_STR, link, count=1)
     elif not link.startswith(SLASH):
         link = SLASH + link
     return link.rstrip(SLASH)
