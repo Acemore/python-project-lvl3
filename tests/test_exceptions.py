@@ -12,10 +12,10 @@ from page_loader.helpers.working_with_fs import (
 from page_loader.helpers.working_with_requests import (
     CONNECTION_ERROR, IO_ERROR, NOT_STATUS_CODE_200, REQUEST_EXCEPTION
 )
-from tests import SITE_MAIN_PAGE_URL
 
 
 FAKE_PATH = '/fake_path'
+SITE_MAIN_PAGE_URL = 'https://page-loader.hexlet.repl.co'
 STATUS_CODE_404 = 404
 
 

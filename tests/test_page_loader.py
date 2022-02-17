@@ -7,7 +7,6 @@ from page_loader import download
 from page_loader.helpers.working_with_fs import (
     get_loaded_local_resources_dir_name, get_loaded_main_page_file_full_path
 )
-from tests import SITE_MAIN_PAGE_URL
 
 
 EXPECTED_CSS_NAME = 'page-loader-hexlet-repl-co-assets-application.css'
@@ -25,6 +24,7 @@ LOCAL_RESOURCES_DIR_CONTENT_LEN = 4
 ORIGINAL_MAIN_PAGE_PATH = 'tests/fixtures/original_main_page.html'
 SITE_CSS_URL = 'https://page-loader.hexlet.repl.co/assets/application.css'
 SITE_IMAGE_URL = 'https://page-loader.hexlet.repl.co/assets/professions/nodejs.png'
+SITE_MAIN_PAGE_URL = 'https://page-loader.hexlet.repl.co/index.html'
 SITE_SCRIPT_URL = 'https://page-loader.hexlet.repl.co/script.js'
 SITE_SUBPAGE_URL = 'https://page-loader.hexlet.repl.co/courses'
 TEMP_DIR_CONTENT_LEN = 2
