@@ -24,7 +24,7 @@ STATUS_CODE_404 = 404
     [
         (requests.exceptions.ConnectionError, CONNECTION_ERROR),
         (IOError, IO_ERROR),
-        (requests.exceptions.RequestException, REQUEST_EXCEPTION),        
+        (requests.exceptions.RequestException, REQUEST_EXCEPTION),
     ]
 )
 def test_requests_exceptions(requests_mock, exc_type, exc_text):

@@ -18,12 +18,14 @@ EXPECTED_LOADED_PHP_FILE_NAME = 'ru-hexlet-io-courses.php'
 EXPECTED_MAIN_PAGE_PATH = 'tests/fixtures/expected_main_page.html'
 EXPECTED_SCRIPT_NAME = 'page-loader-hexlet-repl-co-script.js'
 EXPECTED_SCRIPT_PATH = 'tests/fixtures/expected.js'
-EXPECTED_SUBPAGE_NAME ='page-loader-hexlet-repl-co-courses.html'
+EXPECTED_SUBPAGE_NAME = 'page-loader-hexlet-repl-co-courses.html'
 EXPECTED_SUBPAGE_PATH = 'tests/fixtures/expected_subpage.html'
 LOCAL_RESOURCES_DIR_CONTENT_LEN = 4
 ORIGINAL_MAIN_PAGE_PATH = 'tests/fixtures/original_main_page.html'
 SITE_CSS_URL = 'https://page-loader.hexlet.repl.co/assets/application.css'
-SITE_IMAGE_URL = 'https://page-loader.hexlet.repl.co/assets/professions/nodejs.png'
+SITE_IMAGE_URL = (
+    'https://page-loader.hexlet.repl.co/assets/professions/nodejs.png'
+)
 SITE_MAIN_PAGE_URL = 'https://page-loader.hexlet.repl.co/index.html'
 SITE_SCRIPT_URL = 'https://page-loader.hexlet.repl.co/script.js'
 SITE_SUBPAGE_URL = 'https://page-loader.hexlet.repl.co/courses'
@@ -38,7 +40,7 @@ URL_WITH_PHP = 'http://ru.hexlet.io/courses.php'
     'url, expected_loaded_file_name',
     [
         (URL_WITH_HTML, EXPECTED_LOADED_HTML_FILE_NAME),
-        (URL_WITH_HTTPS, EXPECTED_LOADED_HTML_FILE_NAME), 
+        (URL_WITH_HTTPS, EXPECTED_LOADED_HTML_FILE_NAME),
         (URL_WITH_HTTP, EXPECTED_LOADED_HTML_FILE_NAME),
         (URL_WITH_PHP, EXPECTED_LOADED_PHP_FILE_NAME)
     ]
@@ -90,30 +92,30 @@ def test_loaded_files():
             os.path.join(
                 local_resources_dir_path,
                 EXPECTED_CSS_NAME
-                )
-            ) as result_css:
+            )
+        ) as result_css:
             assert result_css.read() == expected_css_text
         with open(
             os.path.join(
                 local_resources_dir_path,
                 EXPECTED_SUBPAGE_NAME
-                )
-            ) as result_subpage:
+            )
+        ) as result_subpage:
             assert result_subpage.read() == expected_subpage_text
         with open(
             os.path.join(
                 local_resources_dir_path,
                 EXPECTED_IMAGE_NAME
-                ),
-                'rb'
-            ) as result_image:
+            ),
+            'rb'
+        ) as result_image:
             assert result_image.read() == expected_image_content
         with open(
             os.path.join(
                 local_resources_dir_path,
                 EXPECTED_SCRIPT_NAME
-                )
-            ) as result_script:
+            )
+        ) as result_script:
             assert result_script.read() == expected_script_text
 
         assert len(os.listdir(temp_dir)) == TEMP_DIR_CONTENT_LEN
