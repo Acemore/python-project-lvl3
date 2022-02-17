@@ -4,6 +4,10 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/3d68d1669e0f6bca0b2f/maintainability)](https://codeclimate.com/github/Acemore/python-project-lvl3/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/3d68d1669e0f6bca0b2f/test_coverage)](https://codeclimate.com/github/Acemore/python-project-lvl3/test_coverage)
 
+This package allows to download specified page and its local resources from the internet to the specified path.
+
+To install this package from GitHub on your PC enter this command in your terminal:
+python3 -m pip install --user git+https://github.com/Acemore/python-project-lvl3
 
 [![asciicast](https://asciinema.org/a/Vuq3Ub0ouPKB2pmVY0yf8T3Q3.svg)](https://asciinema.org/a/Vuq3Ub0ouPKB2pmVY0yf8T3Q3)
 [![asciicast](https://asciinema.org/a/cmYz6s9HIOkkZdVqfnBaQKTs8.svg)](https://asciinema.org/a/cmYz6s9HIOkkZdVqfnBaQKTs8)
