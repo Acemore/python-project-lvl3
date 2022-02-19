@@ -31,7 +31,12 @@ TAGS_LINK_ATTRS = {
 
 def get_updated_soup(soup, url, output_path):
     local_resources_count = len(
-        [_ for tag in TAGS_LINK_ATTRS for _ in soup.find_all(tag)]
+        [
+            tag
+            for tag, link_attr in TAGS_LINK_ATTRS.items()
+            for tag in soup.find_all(tag)
+            if is_local_resource(tag.get(link_attr), url)
+        ]
     )
     bar = Bar(max=local_resources_count)
 
