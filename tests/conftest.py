@@ -3,7 +3,7 @@ import tempfile
 
 from tests import (
     EXPECTED_CSS_PATH, EXPECTED_IMAGE_PATH, EXPECTED_SCRIPT_PATH,
-    EXPECTED_SUBPAGE_PATH, get_file_content, RB, SITE_MAIN_PAGE_URL
+    EXPECTED_SUBPAGE_PATH, get_file_content, SITE_MAIN_PAGE_URL
 )
 
 
@@ -18,12 +18,12 @@ SITE_SUBPAGE_URL = 'https://page-loader.hexlet.repl.co/courses'
 
 @pytest.fixture
 def mock_main_page_and_its_local_resources_requests(requests_mock):
-    original_main_page_text = get_file_content(ORIGINAL_MAIN_PAGE_PATH)
+    original_main_page_text = get_file_content(ORIGINAL_MAIN_PAGE_PATH).decode()
 
-    expected_css_text = get_file_content(EXPECTED_CSS_PATH)
-    expected_subpage_text = get_file_content(EXPECTED_SUBPAGE_PATH)
-    expected_image_content = get_file_content(EXPECTED_IMAGE_PATH, RB)
-    expected_script_text = get_file_content(EXPECTED_SCRIPT_PATH)
+    expected_css_text = get_file_content(EXPECTED_CSS_PATH).decode()
+    expected_subpage_text = get_file_content(EXPECTED_SUBPAGE_PATH).decode()
+    expected_image_content = get_file_content(EXPECTED_IMAGE_PATH)
+    expected_script_text = get_file_content(EXPECTED_SCRIPT_PATH).decode()
 
     requests_mock.get(SITE_MAIN_PAGE_URL, text=original_main_page_text)
     requests_mock.get(SITE_CSS_URL, text=expected_css_text)
