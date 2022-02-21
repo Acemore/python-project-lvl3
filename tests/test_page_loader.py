@@ -3,11 +3,11 @@ import pytest
 
 from page_loader import download
 from page_loader.helpers.working_with_fs import (
-    get_loaded_local_resources_dir_name, get_loaded_main_page_file_full_path
+    get_loaded_main_page_file_full_path
 )
 from tests import (
     EXPECTED_CSS_PATH, EXPECTED_IMAGE_PATH, EXPECTED_SCRIPT_PATH,
-    EXPECTED_SUBPAGE_PATH, get_file_content, R, RB, SITE_MAIN_PAGE_URL
+    EXPECTED_SUBPAGE_PATH, get_file_content, SITE_MAIN_PAGE_URL
 )
 
 
@@ -15,6 +15,7 @@ EXPECTED_CSS_NAME = 'page-loader-hexlet-repl-co-assets-application.css'
 EXPECTED_IMAGE_NAME = 'page-loader-hexlet-repl-co-assets-professions-nodejs.png'
 EXPECTED_LOADED_HTML_FILE_NAME = 'ru-hexlet-io-courses.html'
 EXPECTED_LOADED_PHP_FILE_NAME = 'ru-hexlet-io-courses.php'
+EXPECTED_LOCAL_RESOURCES_DIR_NAME = 'page-loader-hexlet-repl-co-index_files'
 EXPECTED_MAIN_PAGE_PATH = 'tests/fixtures/expected_main_page.html'
 EXPECTED_SCRIPT_NAME = 'page-loader-hexlet-repl-co-script.js'
 EXPECTED_SUBPAGE_NAME = 'page-loader-hexlet-repl-co-courses.html'
@@ -52,33 +53,30 @@ def test_loaded_page(
 
 
 @pytest.mark.parametrize(
-    'expected_file_name, reading_mode, expected_file_content',
+    'expected_file_name, expected_file_content',
     [
-        (EXPECTED_CSS_NAME, R, get_file_content(EXPECTED_CSS_PATH)),
-        (EXPECTED_SUBPAGE_NAME, R, get_file_content(EXPECTED_SUBPAGE_PATH)),
-        (EXPECTED_IMAGE_NAME, RB, get_file_content(EXPECTED_IMAGE_PATH, RB)),
-        (EXPECTED_SCRIPT_NAME, R, get_file_content(EXPECTED_SCRIPT_PATH))
+        (EXPECTED_CSS_NAME, get_file_content(EXPECTED_CSS_PATH)),
+        (EXPECTED_SUBPAGE_NAME, get_file_content(EXPECTED_SUBPAGE_PATH)),
+        (EXPECTED_IMAGE_NAME, get_file_content(EXPECTED_IMAGE_PATH)),
+        (EXPECTED_SCRIPT_NAME, get_file_content(EXPECTED_SCRIPT_PATH))
     ]
 )
 def test_loaded_local_resources(
     mock_main_page_and_its_local_resources_requests, temp_dir,
-    expected_file_name, reading_mode, expected_file_content
+    expected_file_name, expected_file_content
 ):
     download(SITE_MAIN_PAGE_URL, temp_dir.name)
 
-    local_resources_dir_name = (
-        get_loaded_local_resources_dir_name(SITE_MAIN_PAGE_URL)
-    )
     local_resources_dir_path = os.path.join(
         temp_dir.name,
-        local_resources_dir_name
+        EXPECTED_LOCAL_RESOURCES_DIR_NAME
     )
 
     result_file_path = os.path.join(
         local_resources_dir_path,
         expected_file_name
     )
-    assert get_file_content(result_file_path, reading_mode) == (
+    assert get_file_content(result_file_path) == (
         expected_file_content
     )
 
