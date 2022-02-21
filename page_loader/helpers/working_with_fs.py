@@ -1,10 +1,9 @@
-import logging
 import os
 import re
 from urllib.parse import urlparse
 
-from page_loader.helpers import EMPTY_STR, KnownError, SLASH
-from page_loader.helpers.working_with_requests import get_response_for_request
+from page_loader.helpers import EMPTY_STR, SLASH
+from page_loader.logger import get_logger
 
 
 CREATED_LOADED_RESOURCES_FOLDER = 'Loaded resources folder was created'
@@ -16,7 +15,6 @@ EXT_REGEXP = r'\.[^.\/]+$'
 FILES_POSTFIX = '_files'
 HTML_EXT = '.html'
 HYPHEN = '-'
-LOADED_RESOURCE = "Resource from page '{}' was loaded to path '{}'"
 NO_SUCH_DIR_ERROR = "No such directory: '{}'"
 NOT_LETTER_AND_NOT_DIGIT_REGEXP = r'[^a-zA-Z0-9]'
 OS_ERROR = "Some system error occured, path '{}'"
@@ -24,6 +22,9 @@ QUERY_STRING = r'\?[^?]+$'
 SCHEME_END = '://'
 WRITING_PERMISSION_ERROR = "You don't have permission to write file here: '{}'"
 WRITTEN_LOADED_PAGE = "Loaded page soup was written to '{}'"
+
+
+logger = get_logger(__name__)
 
 
 def create_loaded_local_resources_dir(
@@ -38,17 +39,18 @@ def create_loaded_local_resources_dir(
         try:
             os.mkdir(loaded_resources_dir_full_path)
         except PermissionError:
-            raise KnownError(CREATING_DIR_PERMISSION_ERROR.format(output_path))
+            raise PermissionError(
+                CREATING_DIR_PERMISSION_ERROR.format(output_path)
+            )
         except FileNotFoundError:
-            raise KnownError(NO_SUCH_DIR_ERROR.format(output_path))
+            raise FileNotFoundError(NO_SUCH_DIR_ERROR.format(output_path))
         except OSError:
-            raise KnownError(OS_ERROR.format(output_path))
+            raise OS_ERROR(OS_ERROR.format(output_path))
 
-    logging.info(CREATED_LOADED_RESOURCES_FOLDER)
+    logger.info(CREATED_LOADED_RESOURCES_FOLDER)
 
 
-def download_local_resource(url, output_path):
-    response = get_response_for_request(url)
+def download_local_resource(response, output_path):
     response_chunks = response.iter_content()
 
     try:
@@ -56,11 +58,9 @@ def download_local_resource(url, output_path):
             for response_chunk in response_chunks:
                 loaded_file.write(response_chunk)
     except PermissionError:
-        raise KnownError(WRITING_PERMISSION_ERROR.format(output_path))
+        raise PermissionError(WRITING_PERMISSION_ERROR.format(output_path))
     except OSError:
-        raise KnownError(OS_ERROR.format(output_path))
-    else:
-        logging.info(LOADED_RESOURCE.format(url, output_path))
+        raise OSError(OS_ERROR.format(output_path))
 
 
 def get_hyphenated_str(str):
@@ -145,8 +145,10 @@ def write_loaded_main_page(loaded_page_full_path, soup):
         with open(loaded_page_full_path, 'w') as loaded_page:
             loaded_page.write(soup)
     except PermissionError:
-        raise KnownError(WRITING_PERMISSION_ERROR.format(loaded_page_full_path))
+        raise PermissionError(
+            WRITING_PERMISSION_ERROR.format(loaded_page_full_path)
+        )
     except OSError:
-        raise KnownError(OS_ERROR.format(loaded_page_full_path))
+        raise OSError(OS_ERROR.format(loaded_page_full_path))
     else:
-        logging.info(WRITTEN_LOADED_PAGE.format(loaded_page_full_path))
+        logger.info(WRITTEN_LOADED_PAGE.format(loaded_page_full_path))
