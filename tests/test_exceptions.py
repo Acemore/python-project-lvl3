@@ -4,10 +4,10 @@ import stat
 from requests.exceptions import ConnectionError, HTTPError, RequestException
 
 from page_loader import download
-from page_loader.helpers.working_with_fs import (
+from page_loader.helpers.io import (
     CREATING_DIR_PERMISSION_ERROR, NO_SUCH_DIR_ERROR
 )
-from page_loader.helpers.working_with_requests import (
+from page_loader.helpers.requests import (
     CONNECTION_ERROR, NOT_STATUS_CODE_200, REQUEST_EXCEPTION
 )
 
