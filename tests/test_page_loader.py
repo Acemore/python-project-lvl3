@@ -2,9 +2,7 @@ import os
 import pytest
 
 from page_loader import download
-from page_loader.helpers.working_with_fs import (
-    get_loaded_main_page_file_full_path
-)
+from page_loader.helpers.urls import get_loaded_main_page_file_full_path
 from tests import (
     EXPECTED_CSS_PATH, EXPECTED_IMAGE_PATH, EXPECTED_SCRIPT_PATH,
     EXPECTED_SUBPAGE_PATH, get_file_content, SITE_MAIN_PAGE_URL
@@ -84,3 +82,31 @@ def test_loaded_local_resources(
     assert len(os.listdir(local_resources_dir_path)) == (
         LOCAL_RESOURCES_DIR_CONTENT_LEN
     )
+
+
+@pytest.mark.parametrize(
+    'expected_file_name',
+    [
+        EXPECTED_CSS_NAME,
+        EXPECTED_SUBPAGE_NAME,
+        EXPECTED_IMAGE_NAME
+    ]
+)
+def test_local_resources_with_exceptions(
+    mock_resources_requests_with_exceptions, temp_dir, expected_file_name
+):
+    download(SITE_MAIN_PAGE_URL, temp_dir.name)
+
+    local_resources_dir_path = os.path.join(
+        temp_dir.name,
+        EXPECTED_LOCAL_RESOURCES_DIR_NAME
+    )
+
+    result_file_path = os.path.join(
+        local_resources_dir_path,
+        expected_file_name
+    )
+    assert not os.path.exists(result_file_path)
+
+    assert len(os.listdir(temp_dir.name)) == TEMP_DIR_CONTENT_LEN
+    assert len(os.listdir(local_resources_dir_path)) == 1

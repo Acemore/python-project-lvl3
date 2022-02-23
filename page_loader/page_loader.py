@@ -2,14 +2,16 @@ import os
 from bs4 import BeautifulSoup
 from progress.bar import Bar
 
-from page_loader.helpers.working_with_fs import (
-    create_loaded_local_resources_dir, download_local_resource,
-    get_loaded_local_resources_dir_name, get_loaded_local_resource_file_path,
-    get_loaded_main_page_file_full_path, write_loaded_main_page
+from page_loader.helpers.io import (
+    create_loaded_local_resources_dir, write_loaded_local_resource,
+    write_loaded_main_page
 )
-from page_loader.helpers.working_with_requests import (
-    get_local_resource_abs_link, get_local_resource_relative_link,
-    get_response_for_request, is_local_resource
+from page_loader.helpers.requests import get_response_for_request
+from page_loader.helpers.urls import (
+    get_loaded_local_resources_dir_name, get_loaded_local_resource_file_path,
+    get_loaded_main_page_file_full_path, get_local_resource_abs_link,
+    get_local_resource_relative_link, is_local_resource
+
 )
 from page_loader.logger import get_logger
 
@@ -96,26 +98,29 @@ def download(url, output_path=os.getcwd()):
                 RECEIVED_LOADED_RESOURCE_PATH.format(local_resource_abs_link)
             )
 
-            tag[link_attr] = loaded_local_resource_path
-            logger.info(
-                CHANGED_RESOURCE_LINK.format(
-                    local_resource_relative_link,
-                    loaded_local_resource_path
+            try:
+                local_resource_link_request_response = (
+                    get_response_for_request(local_resource_abs_link)
                 )
-            )
+            except Exception as exc:
+                logger.warning(exc)
+            else:
+                write_loaded_local_resource(
+                    local_resource_link_request_response,
+                    os.path.join(output_path, loaded_local_resource_path)
+                )
+                logger.info(
+                    LOADED_RESOURCE.format(local_resource_abs_link, output_path)
+                )
+                tag[link_attr] = loaded_local_resource_path
+                logger.info(
+                    CHANGED_RESOURCE_LINK.format(
+                        local_resource_relative_link,
+                        loaded_local_resource_path
+                    )
+                )
 
-            local_resource_link_request_response = (
-                get_response_for_request(local_resource_abs_link)
-            )
-            download_local_resource(
-                local_resource_link_request_response,
-                os.path.join(output_path, loaded_local_resource_path)
-            )
-            logger.info(
-                LOADED_RESOURCE.format(local_resource_abs_link, output_path)
-            )
-
-            bar.next()
+                bar.next()
             bar.finish()
     logger.info(UPDATED_LOADED_PAGE_SOUP)
     logger.info(LOADED_ALL_RESOURCES)
