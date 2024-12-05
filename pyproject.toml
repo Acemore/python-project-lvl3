@@ -13,7 +13,7 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.8.1"
 requests = "^2.27.1"
 beautifulsoup4 = "^4.10.0"
 progress = "^1.6"
@@ -22,10 +22,12 @@ progress = "^1.6"
 page-loader = "page_loader.scripts.page_loader:main"
 
 [tool.poetry.dev-dependencies]
-flake8 = "^4.0.1"
 pytest = "^6.2.5"
 pytest-cov = "^3.0.0"
 requests-mock = "^1.9.3"
+
+[tool.poetry.group.dev.dependencies]
+flake8 = "^7.1.1"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
